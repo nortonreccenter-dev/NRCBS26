@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NRC 2026 Baseball / Softball Registration</title>
+  <style>
+    :root{--bg:#08111f;--card:#101b2f;--card2:#0d1628;--text:#eef4ff;--muted:#a8b6d1;--line:rgba(255,255,255,.10);--accent:#7aa2ff;--danger:#ff6b6b}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#07101c,#0b1220 30%,#0b1220);color:var(--text)}
+    .wrap{max-width:1120px;margin:0 auto;padding:24px}.hero{border:1px solid var(--line);background:linear-gradient(180deg,rgba(122,162,255,.10),rgba(255,255,255,.03));border-radius:24px;padding:28px;display:grid;grid-template-columns:1.4fr .9fr;gap:20px;margin-top:12px}
+    .hero h1{margin:0 0 10px;font-size:clamp(30px,5vw,48px);line-height:1.05}.hero p{margin:0;color:var(--muted);font-size:16px;line-height:1.6}.heroCard{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:18px;padding:18px;align-self:start}
+    .gridStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.stat{border:1px solid var(--line);background:var(--card2);border-radius:16px;padding:14px}.stat .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.stat .value{font-size:28px;font-weight:800;margin-top:6px}
+    .section{margin-top:20px;border:1px solid var(--line);background:var(--card);border-radius:22px;padding:22px}.section h2{margin:0 0 12px;font-size:24px}.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.step,.faq{border:1px solid var(--line);background:var(--card2);border-radius:16px;padding:16px}.step b{display:block;margin-bottom:8px}.muted{color:var(--muted)}
+    form .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}.col-2{grid-column:span 2}
+    @media (max-width:900px){.hero,.steps{grid-template-columns:1fr}.col-8,.col-6,.col-4,.col-3,.col-2{grid-column:span 12}}
+    label{display:block;color:var(--muted);font-size:14px;margin-bottom:6px}input,select,textarea{width:100%;border-radius:14px;border:1px solid var(--line);background:#0b1324;color:var(--text);padding:12px 14px;font:inherit;outline:none}textarea{min-height:96px;resize:vertical}.required::after{content:" *";color:var(--danger)}
+    .choiceGrid{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))}.choice,.inlineChoice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:#0b1324;border-radius:16px;padding:12px 14px}.choice input,.inlineChoice input{width:auto;margin-top:2px}.inlineRow{display:flex;flex-wrap:wrap;gap:10px}
+    .feeBar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);background:#0b1324;border-radius:16px;padding:14px 16px;margin-top:8px}.feeBar strong{font-size:20px}.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(122,162,255,.12);color:#a9c1ff;font-size:12px;font-weight:700}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:20px}.status{color:var(--muted);font-size:14px}.success{color:#8ef0b6}.error{color:#ffb0b0}.successBox,.infoBox{margin-top:16px;padding:16px;border-radius:16px;border:1px solid var(--line);display:none}.successBox{background:rgba(34,197,94,.09)}.infoBox{background:rgba(122,162,255,.09)}
+    button{border:none;border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer;font:inherit}.primary{background:var(--accent);color:#07111f}.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.footer{padding:28px 0 50px;color:var(--muted);font-size:14px}a{color:#a9c1ff}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <div class="pill">2026 Season Registration</div>
+        <h1>NRC Baseball / Softball / T-Ball Registration</h1>
+        <p>Complete the registration below. When you click submit, the page will automatically send you to Square for payment. After a successful payment, you will return here and your registration will be verified automatically.</p>
+      </div>
+      <div class="heroCard">
+        <div class="muted">Live public registration counter</div>
+        <div class="gridStats">
+          <div class="stat"><div class="label">Paid registrations</div><div class="value" id="counterTotal">—</div></div>
+          <div class="stat"><div class="label">Current fee</div><div class="value" id="currentFee">$—</div></div>
+          <div class="stat"><div class="label">Standard deadline</div><div class="value" id="deadlineText" style="font-size:18px">—</div></div>
+          <div class="stat"><div class="label">Payment status</div><div class="value" id="statusBadge" style="font-size:18px">Ready</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step"><b>1. Complete the registration</b><span class="muted">Fill in player, division, contact, volunteer, and waiver details.</span></div>
+        <div class="step"><b>2. Automatic Square redirect</b><span class="muted">After submit, the site creates a Square checkout link and sends the payer there automatically.</span></div>
+        <div class="step"><b>3. Verified and counted</b><span class="muted">After payment, the site verifies the transaction and updates the public counter from the Google Sheet.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Registration form</h2>
+      <div class="feeBar"><div><div class="muted">Current registration fee</div><strong id="feeSummary">$15 standard registration</strong></div><div id="feePill" class="pill">Fee loaded from backend</div></div>
+      <div id="returnInfo" class="infoBox"></div>
+      <div id="successBox" class="successBox"></div>
+      <form id="regForm" novalidate>
+        <div class="grid">
+          <div class="col-8"><label class="required" for="playerName">Player name</label><input id="playerName" name="playerName" required autocomplete="name"></div>
+          <div class="col-4"><label class="required">Gender</label><div class="inlineRow"><label class="inlineChoice"><input type="radio" name="gender" value="Boy" required> <span>Boy</span></label><label class="inlineChoice"><input type="radio" name="gender" value="Girl" required> <span>Girl</span></label></div></div>
+          <div class="col-12"><label class="required" for="address">Address</label><input id="address" name="address" required autocomplete="street-address"></div>
+          <div class="col-2"><label class="required" for="age">Age</label><input id="age" name="age" type="number" min="3" max="18" required></div>
+          <div class="col-4"><label class="required" for="birthdate">Birthdate</label><input id="birthdate" name="birthdate" type="date" required></div>
+          <div class="col-3"><label for="cell">Cell phone</label><input id="cell" name="cell" type="tel"></div>
+          <div class="col-3"><label for="homePhone">Home phone</label><input id="homePhone" name="homePhone" type="tel"></div>
+          <div class="col-3"><label class="required" for="grade">Grade</label><input id="grade" name="grade" required></div>
+          <div class="col-3"><label class="required" for="shirtSize">T-shirt size</label><select id="shirtSize" name="shirtSize" required><option value="">Select a size</option><option>YS (6-8)</option><option>YM (10-12)</option><option>YL (14-16)</option><option>Adult S</option><option>Adult M</option><option>Adult L</option><option>Adult XL</option></select></div>
+          <div class="col-6"><label class="required" for="email">Parent/guardian email</label><input id="email" name="email" type="email" required autocomplete="email"></div>
+          <div class="col-12"><label class="required">Division selection</label><div class="muted" style="margin-bottom:8px">Age as of May 1, 2026.</div><div class="choiceGrid"><label class="choice"><input type="checkbox" name="divisions" value="Tee Ball"> <span>Tee Ball - 5U Pre-K</span></label><label class="choice"><input type="checkbox" name="divisions" value="K-1 Girls"> <span>Kinder / 1st Grade Girls</span></label><label class="choice"><input type="checkbox" name="divisions" value="K-1 Boys"> <span>Kinder / 1st Grade Boys</span></label><label class="choice"><input type="checkbox" name="divisions" value="2-3 Girls"> <span>2nd-3rd Grade Girls</span></label><label class="choice"><input type="checkbox" name="divisions" value="2-3 Boys"> <span>2nd-3rd Grade Boys</span></label><label class="choice"><input type="checkbox" name="divisions" value="4-6 Girls"> <span>4th-6th Grade Girls</span></label><label class="choice"><input type="checkbox" name="divisions" value="4-6 Boys"> <span>4th-6th Grade Boys</span></label><label class="choice"><input type="checkbox" name="divisions" value="Travel Team"> <span>Traveling Team</span></label></div></div>
+          <div class="col-6"><label>Would you like to coach?</label><div class="inlineRow"><label class="inlineChoice"><input type="radio" name="coach" value="Yes"> <span>Yes</span></label><label class="inlineChoice"><input type="radio" name="coach" value="No"> <span>No</span></label></div></div>
+          <div class="col-6"><label>Would you like to assist?</label><div class="inlineRow"><label class="inlineChoice"><input type="radio" name="assist" value="Yes"> <span>Yes</span></label><label class="inlineChoice"><input type="radio" name="assist" value="No"> <span>No</span></label></div></div>
+          <div class="col-12"><label for="notes">Notes</label><textarea id="notes" name="notes" placeholder="Allergies, schedule notes, or anything else NRC should know"></textarea></div>
+          <div class="col-12"><label class="required">Waiver</label><label class="choice"><input type="checkbox" id="waiverAgree" name="waiverAgree" required> <span>I agree to the waiver and release statement.</span></label></div>
+          <div class="col-6"><label class="required" for="parentSignature">Parent/guardian signature</label><input id="parentSignature" name="parentSignature" required></div>
+          <div class="col-3"><label class="required" for="sigDate">Signature date</label><input id="sigDate" name="sigDate" type="date" required></div>
+        </div>
+        <div class="actions"><div id="formStatus" class="status">Fill out the form, then click submit to continue to Square checkout.</div><button type="button" id="resetBtn" class="secondary">Reset</button><button type="submit" class="primary">Continue to payment</button></div>
+      </form>
+    </div>
+
+    <div class="section">
+      <h2>Questions</h2>
+      <div class="steps">
+        <div class="faq"><b>When do I pay?</b><div class="muted">The payment step begins immediately after form submission.</div></div>
+        <div class="faq"><b>How is payment verified?</b><div class="muted">After Square sends the payer back to this page, the site asks the Apps Script backend to verify the Square order and payment status.</div></div>
+        <div class="faq"><b>What if someone closes the tab?</b><div class="muted">The Apps Script includes a reconciliation function you can run on a timer to verify pending payments later.</div></div>
+      </div>
+    </div>
+
+    <div class="footer">Norton Recreation Commission registration page.</div>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+    const form = document.getElementById("regForm");
+    const formStatus = document.getElementById("formStatus");
+    const resetBtn = document.getElementById("resetBtn");
+    const successBox = document.getElementById("successBox");
+    const returnInfo = document.getElementById("returnInfo");
+
+    function setStatus(msg, mode = "normal") {
+      formStatus.textContent = msg;
+      formStatus.className = "status" + (mode === "success" ? " success" : mode === "error" ? " error" : "");
+      document.getElementById("statusBadge").textContent = mode === "success" ? "Verified" : mode === "error" ? "Needs attention" : "Ready";
+    }
+
+    function checkedValues(name) {
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+    }
+
+    async function apiGet(params) {
+      const qs = new URLSearchParams(params);
+      const res = await fetch(`${APPS_SCRIPT_URL}?${qs.toString()}`);
+      return res.json();
+    }
+
+    async function apiPost(payload) {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const text = await res.text();
+      return JSON.parse(text);
+    }
+
+    function setFeeUI(meta) {
+      document.getElementById("counterTotal").textContent = meta.paidCount ?? "0";
+      document.getElementById("currentFee").textContent = meta.currentFeeDisplay || "$15";
+      document.getElementById("deadlineText").textContent = meta.deadlineDisplay || "April 1, 2026";
+      document.getElementById("feeSummary").textContent = meta.currentFeeLabel || "$15 standard registration";
+      document.getElementById("feePill").textContent = meta.isLateFee ? "Late fee active" : "Standard fee active";
+    }
+
+    async function loadPublicData() {
+      try {
+        const data = await apiGet({ action: "stats" });
+        if (data.ok) setFeeUI(data);
+      } catch (err) { console.error(err); }
+    }
+
+    async function handleReturnFromSquare() {
+      const params = new URLSearchParams(window.location.search);
+      const registrationId = params.get("registration_id");
+      const fromSquare = params.get("square_return");
+      if (!registrationId || !fromSquare) return;
+
+      returnInfo.style.display = "block";
+      returnInfo.textContent = "Finalizing your registration and verifying your payment...";
+
+      try {
+        const result = await apiGet({ action: "verify", registrationId });
+        if (result.ok && result.verified) {
+          successBox.style.display = "block";
+          successBox.innerHTML = `<strong>Registration complete.</strong><br>Your payment was verified and your registration is now marked paid.`;
+          returnInfo.style.display = "none";
+          setStatus("Payment verified and registration completed.", "success");
+          await loadPublicData();
+          history.replaceState({}, "", window.location.pathname);
+        } else {
+          returnInfo.textContent = result.message || "We couldn't verify payment yet. Please contact NRC if this does not update.";
+          setStatus("Payment return detected, but verification is still pending.", "error");
+        }
+      } catch (err) {
+        console.error(err);
+        returnInfo.textContent = "We couldn't verify the payment automatically. Please contact NRC.";
+        setStatus("Automatic verification failed.", "error");
+      }
+    }
+
+    resetBtn.addEventListener("click", () => {
+      form.reset();
+      document.getElementById("sigDate").value = new Date().toISOString().slice(0,10);
+      setStatus("Form reset.");
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        setStatus("Please complete all required fields.", "error");
+        return;
+      }
+      const divisions = checkedValues("divisions");
+      if (!divisions.length) {
+        setStatus("Please select at least one division.", "error");
+        alert("Please select at least one division.");
+        return;
+      }
+      const payload = {
+        action: "create_checkout",
+        returnUrl: window.location.origin + window.location.pathname,
+        registration: {
+          playerName: form.playerName.value.trim(),
+          gender: form.gender.value,
+          address: form.address.value.trim(),
+          age: form.age.value,
+          birthdate: form.birthdate.value,
+          cell: form.cell.value.trim(),
+          homePhone: form.homePhone.value.trim(),
+          grade: form.grade.value.trim(),
+          shirtSize: form.shirtSize.value,
+          notes: form.notes.value.trim(),
+          divisions,
+          coach: form.coach?.value || "",
+          assist: form.assist?.value || "",
+          waiverAgree: form.waiverAgree.checked,
+          parentSignature: form.parentSignature.value.trim(),
+          sigDate: form.sigDate.value,
+          email: form.email.value.trim()
+        }
+      };
+      try {
+        setStatus("Creating checkout and redirecting to Square...");
+        const result = await apiPost(payload);
+        if (!result.ok) {
+          if (result.duplicate) {
+            setStatus("Duplicate registration detected.", "error");
+            alert("Duplicate registration detected. This player may already be registered.");
+            return;
+          }
+          throw new Error(result.error || "Unable to create checkout.");
+        }
+        window.location.href = result.checkoutUrl;
+      } catch (err) {
+        console.error(err);
+        setStatus("Unable to start checkout. Please try again.", "error");
+        alert(err.message || "Unable to start checkout.");
+      }
+    });
+
+    document.getElementById("sigDate").value = new Date().toISOString().slice(0,10);
+    loadPublicData();
+    handleReturnFromSquare();
+  </script>
+</body>
+</html>
